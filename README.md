@@ -1,12 +1,12 @@
 # AstroNews
 Android | Noticias sobre astronomia, astrofísica, astronáutica e áreas afins 🚀
 
-- **API consumption**. The app consumes eht SpaceFlightNews Api (https://spaceflightnewsapi.net/).
-- **MVVM architecture**. The app is based on modern Android components and MVVM architecture.
-- **Clean Architecture**. It's development follows clean architecture practices, such as separation of core, domain, data and presentation layers.
-- **UX/UI**. Creating a modern, crisp and accessible interface using Google Material Design components.
-- **Cyrillic, Latin and Greek support**. Use of a font family with support for different character sets.
-- **Coroutines**. Extensive use of coroutines for remote data access and other operations.
-- **Flow**. Use of flows instead of LiveData.
+- **API consumption**. O aplicativo consome eht SpaceFlightNews Api (https://spaceflightnewsapi.net/).
+- **MVVM architecture**. O aplicativo é baseado em componentes Android modernos e arquitetura MVVM.
+- **Clean Architecture**. Seu desenvolvimento segue práticas de arquitetura limpa, como separação de camadas de núcleo, domínio, dados e apresentação.
+- **UX/UI**. Criando uma interface moderna, nítida e acessível usando componentes do Google Material Design.
+- **Cyrillic, Latin and Greek support**. Uso de uma família de fontes com suporte para diferentes conjuntos de caracteres.
+- **Coroutines**. Uso extensivo de corrotinas para acesso remoto a dados e outras operações.
+- **Flow**. Uso de Flow em vez de LiveData.
 - **Dependency injection with Koin**. 
 - **Fragment-based navigation**.
