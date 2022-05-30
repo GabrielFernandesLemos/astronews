@@ -5,8 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import br.com.chicorialabs.astranovos.core.PostState
 import br.com.chicorialabs.astranovos.databinding.HomeFragmentBinding
 import br.com.chicorialabs.astranovos.presentation.adapter.PostListAdapter
+import com.google.android.material.snackbar.Snackbar
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeFragment : Fragment() {
@@ -22,8 +24,24 @@ class HomeFragment : Fragment() {
     ): View? {
 
         initBinding()
+
+        initSnackBar()
         initRecyclerView()
         return binding.root
+    }
+
+
+    private fun initSnackBar() {
+        viewModel.snackbar.observe(viewLifecycleOwner) {
+            it?.let { errorMessage ->
+                Snackbar.make(
+                    binding.root,
+                    errorMessage,
+                    Snackbar.LENGTH_LONG
+                ).show()
+                viewModel.onSnackBarShown()
+            }
+        }
     }
 
     private fun initRecyclerView() {
@@ -31,8 +49,19 @@ class HomeFragment : Fragment() {
         val adapter = PostListAdapter()
         binding.homeRv.adapter = adapter
 
-        viewModel.listPost.observe(viewLifecycleOwner) {
-            adapter.submitList(it)
+        viewModel.listPost.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                PostState.Loading -> {
+                    viewModel.showProgressBar()
+                }
+                is PostState.Error -> {
+                    viewModel.hideProgressBar()
+                }
+                is PostState.Success -> {
+                    viewModel.hideProgressBar()
+                    adapter.submitList(state.result)
+                }
+            }
         }
 
 

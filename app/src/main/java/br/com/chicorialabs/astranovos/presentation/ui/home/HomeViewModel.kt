@@ -4,35 +4,57 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.chicorialabs.astranovos.data.model.Post
-import br.com.chicorialabs.astranovos.data.repository.MockAPIService
+import br.com.chicorialabs.astranovos.core.RemoteException
+import br.com.chicorialabs.astranovos.core.PostState
 import br.com.chicorialabs.astranovos.data.repository.PostRepository
-import br.com.chicorialabs.astranovos.data.repository.PostRepositoryImpl
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
-import java.lang.StringBuilder
 
 class HomeViewModel(
     private val repository: PostRepository
 ) : ViewModel() {
 
-    private val _listPost = MutableLiveData<List<Post>>()
-    val listPost: LiveData<List<Post>>
-        get() = _listPost
+    private val _progressBarVisible = MutableLiveData<Boolean>(false)
+    val progressBarVisible: LiveData<Boolean> = _progressBarVisible
+
+    fun showProgressBar() {
+        _progressBarVisible.value = true
+    }
+
+    fun hideProgressBar() {
+        _progressBarVisible.value = false
+    }
+
+    private val _snackbar = MutableLiveData<String?>(null)
+    val snackbar: LiveData<String?> = _snackbar
+
+    fun onSnackBarShown() {
+        _snackbar.value = null
+    }
+
+    private val _listPost = MutableLiveData<PostState>()
+    val listPost: LiveData<PostState> = _listPost
 
     init {
         fetchPosts()
     }
 
-    /**
-     * Esse método coleta o fluxo do repositorio e atribui
-     * o seu valor ao campo _listPost
-     */
     private fun fetchPosts() {
         viewModelScope.launch {
-            repository.listPosts().collect {
-                _listPost.value = it
-            }
+            repository.listPosts()
+                .onStart {
+                    _listPost.postValue(PostState.Loading)
+                }
+                .catch {
+                    val exception = RemoteException("Unable to connect to SpaceFlight News API")
+                    _listPost.postValue(PostState.Error(exception))
+                    _snackbar.postValue(exception.message)
+                }
+                .collect { listPost ->
+                    _listPost.value = PostState.Success(listPost)
+                }
         }
     }
 
