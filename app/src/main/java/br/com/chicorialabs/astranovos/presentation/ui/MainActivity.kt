@@ -4,10 +4,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import br.com.chicorialabs.astranovos.R
 
-/**
- * A MainActivity serve essencialmente para hospedar os
- * fragmentos.
- */
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

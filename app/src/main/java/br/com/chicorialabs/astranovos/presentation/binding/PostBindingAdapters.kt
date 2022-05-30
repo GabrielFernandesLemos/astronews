@@ -16,10 +16,6 @@ import java.time.ZoneId
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 
-/**
- *  Esse arquivo mantém BindingAdapters para os objetos do
- *  tipo Post associados aos itens da RecyclerView
- */
 @BindingAdapter("postTitle")
 fun TextView.setPostTitle(post: Post?) {
     post?.let {
@@ -34,18 +30,10 @@ fun TextView.setPostSummary(post: Post?) {
     }
 }
 
-
-/**
- * Esse adapter usa a biblioteca Glide para carregar uma imagem
- * à partir da URL e aplicá-la à ImageView
- */
 @BindingAdapter("postImage")
 fun ImageView.setImage(post: Post?) {
     post?.let {
 
-        /**
-         * Exibe uma progressBar circular enquanto carrega a imagem
-         */
         val circularProgressDrawable = CircularProgressDrawable(context)
         circularProgressDrawable.strokeWidth = 5f
         circularProgressDrawable.centerRadius = 30f
@@ -57,12 +45,6 @@ fun ImageView.setImage(post: Post?) {
     }
 }
 
-/**
- * Esse adapter mostra o Chip se o post tiver um lançamento
- * associado; senão, oculta o Chip. O texto é formatado usando
- * uma Plural String para selecionar o string correto (no singular
- * ou no plural conforme a quantidade de lançamentos).
- */
 @BindingAdapter("itemHasLaunch")
 fun Chip.setHasLaunch(post: Post?) {
     post?.let {
@@ -77,11 +59,6 @@ fun Chip.setHasLaunch(post: Post?) {
 }
 
 
-
-/**
- * Esse adapter converte a data em formato String usando a classe Instant
- * e depois formata para o padrão dd-mm-aaaa.
- */
 @RequiresApi(Build.VERSION_CODES.O)
 @BindingAdapter("postPublishedDate")
 fun Chip.setUpdate(post: Post?) {

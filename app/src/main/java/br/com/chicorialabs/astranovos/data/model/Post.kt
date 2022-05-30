@@ -1,10 +1,5 @@
 package br.com.chicorialabs.astranovos.data.model
 
-/**
- * Essa data class representa uma publicação; os artigos, postagens
- * em blog e relatórios possuem a mesma estrutura, então deve
- * funcionar em qualquer um dos casos.
- */
 data class Post(
     val id: Int,
     val title: String,
@@ -15,18 +10,10 @@ data class Post(
     val updatedAt: String?,
     var launches: Array<Launch> = emptyArray()
 ) {
-    /**
-     * A função hasLaunch() é um método de conveniência para
-     * indicar se há lançamentos associados à notícia.
-     */
     fun hasLaunch(): Boolean = launches.isNotEmpty()
 
     fun getLaunchCount() : Int = launches.size
 
-    /**
-     * Sobrescrevi os métodos equals() e hashCode() para melhorar o
-     * desempenho da DiffUtil
-     */
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false

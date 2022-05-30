@@ -14,11 +14,6 @@ import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
-/**
- * Esse object é responsável por instanciar e configurar os serviços web. Está com duas
- * responsabilidades (epa!): configurar os serviços web (OkHttp e Retrofit) e fazer
- * a injeção de dependências por meio do Koin.
- */
 object DataModule {
 
     private const val BASE_URL = "https://api.spaceflightnewsapi.net/v3/"
@@ -34,29 +29,24 @@ object DataModule {
         }
     }
 
-    /**
-     * Cria um módulo de rede
-     */
     private fun networkModule() : Module {
         return module {
 
-            /**
-             * Criar um logging interceptor usando o OkHttp3
-             */
             single {
-                createOkHttpClient()
+                val interceptor = HttpLoggingInterceptor {
+                    Log.e(OK_HTTP, it, )
+                }
+                interceptor.level = HttpLoggingInterceptor.Level.BODY
+
+                OkHttpClient.Builder()
+                    .addInterceptor(interceptor)
+                    .build()
             }
 
-            /**
-             * Instancia uma factory do Moshi
-             */
             single {
                 Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
             }
 
-            /**
-             * Cria o serviço de rede usando o Retrofit
-             */
             single {
                 createService<SpaceFlightNewsService>(get(), get())
             }
@@ -64,26 +54,6 @@ object DataModule {
         }
     }
 
-    /**
-     * Essa função cria um OkHttpClient com um interceptor
-     * para logar as respostas do servidor.
-     */
-    private fun createOkHttpClient(): OkHttpClient {
-        val interceptor = HttpLoggingInterceptor {
-            Log.e(OK_HTTP, it)
-        }
-        interceptor.level = HttpLoggingInterceptor.Level.BODY
-
-        return OkHttpClient.Builder()
-            .addInterceptor(interceptor)
-            .build()
-    }
-
-    /**
-     * Essa função usa o Retrofit para criar um SpaceFlightNewsService.
-     * Recebe como parâmetros um cliente OkHttp3 e uma factory do Moshi
-     * para fazer a conversão dos dados.
-     */
     private inline fun <reified T> createService(
         client: OkHttpClient,
         factory: Moshi,
