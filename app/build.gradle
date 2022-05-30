@@ -38,8 +38,7 @@ android {
 
 dependencies {
     def nav_version = "2.3.5"
-    def koin_version = "3.2.0"
-
+    def koin_version = "3.0.1"
 
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.3.0'
@@ -56,6 +55,11 @@ dependencies {
     //Koin
     implementation "io.insert-koin:koin-android:$koin_version"
     implementation "io.insert-koin:koin-android-ext:$koin_version"
+    testImplementation "io.insert-koin:koin-test:$koin_version"
+    testImplementation "io.insert-koin:koin-test-junit4:$koin_version"
+
+    //MockWebServer
+    testImplementation 'com.squareup.okhttp3:mockwebserver:4.6.0'
 
     //Navigation
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
@@ -71,7 +75,10 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:2.9.0"
     implementation "com.squareup.okhttp3:logging-interceptor:4.9.0"
 
+
     //Moshi (JSON mapping)
     implementation("com.squareup.moshi:moshi-kotlin:1.12.0")
     implementation "com.squareup.retrofit2:converter-moshi:2.9.0"
+
+
 }
